@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vanolieska Mijares — UX Designer</title>
+
+  <!-- Google Fonts: DM Sans for body, DM Serif Display for headings -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+
+  <style>
+    /* =============================================
+       DESIGN TOKENS
+       ============================================= */
+    :root {
+      --color-bg:         #f9f8f6;        /* warm off-white canvas */
+      --color-surface:    #ffffff;        /* card / section surface */
+      --color-text:       #1e1e1e;        /* near-black body text */
+      --color-text-muted: #767676;        /* secondary text */
+      --color-accent:     #5b6e7c;        /* slate blue-grey accent */
+      --color-accent-hover: #3d4f5a;
+      --color-border:     #e5e3de;        /* subtle warm border */
+
+      --font-display: 'DM Serif Display', Georgia, serif;
+      --font-body:    'DM Sans', system-ui, sans-serif;
+
+      /* Type scale (Major Third 1.25) */
+      --text-xs:   0.8rem;
+      --text-sm:   0.9rem;
+      --text-base: 1rem;
+      --text-lg:   1.125rem;
+      --text-xl:   1.4rem;
+      --text-2xl:  1.75rem;
+      --text-3xl:  2.5rem;
+
+      /* 8pt spacing scale */
+      --space-1:  4px;
+      --space-2:  8px;
+      --space-3:  12px;
+      --space-4:  16px;
+      --space-5:  24px;
+      --space-6:  32px;
+      --space-7:  48px;
+      --space-8:  64px;
+      --space-9:  96px;
+
+      --radius-sm: 4px;
+      --radius-md: 8px;
+
+      --max-width: 800px;
+      --transition: 200ms ease;
+    }
+
+    /* =============================================
+       RESET & BASE
+       ============================================= */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background-color: var(--color-bg);
+      color: var(--color-text);
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      font-weight: 300;
+      line-height: 1.65;
+    }
+
+    /* Respect motion preferences */
+    @media (prefers-reduced-motion: reduce) {
+      * { transition-duration: 0ms !important; }
+    }
+
+    /* =============================================
+       LAYOUT SHELL
+       ============================================= */
+    .page-wrapper {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .container {
+      width: 100%;
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 var(--space-6);
+    }
+
+    section {
+      padding-top: var(--space-6);
+      padding-bottom: var(--space-6);
+    }
+
+    /* Thin divider between sections */
+    .section-divider {
+      border: none;
+      border-top: 1px solid var(--color-border);
+      max-width: var(--max-width);
+      margin: 0 auto;
+    }
+
+    /* =============================================
+       HEADER / HERO SECTION
+       ============================================= */
+    header {
+      padding-top: var(--space-8);
+      padding-bottom: var(--space-7);
+    }
+
+    .hero-eyebrow {
+      font-family: var(--font-body);
+      font-size: var(--text-xs);
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      margin-bottom: var(--space-5);
+    }
+
+    .hero-name {
+      font-family: var(--font-display);
+      font-size: var(--text-3xl);
+      font-weight: 400;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: var(--color-text);
+      margin-bottom: var(--space-2);
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: var(--text-xl);
+      font-weight: 400;
+      font-style: italic;
+      color: var(--color-text-muted);
+      margin-bottom: var(--space-6);
+    }
+
+    .hero-intro {
+      font-size: var(--text-lg);
+      font-weight: 300;
+      line-height: 1.7;
+      color: var(--color-text);
+      max-width: 580px;
+    }
+
+    /* =============================================
+       SECTION LABELS
+       ============================================= */
+    .section-label {
+      font-size: var(--text-xs);
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-bottom: var(--space-7);
+    }
+
+    /* =============================================
+       CASE STUDIES SECTION
+       ============================================= */
+
+    /* Each case study is an editorial row */
+    .case-study {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-5);
+      padding: var(--space-6) 0;
+      border-top: 1px solid var(--color-border);
+    }
+
+    .case-study:last-child {
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .case-study-meta {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+
+    .case-study-number {
+      font-size: var(--text-xs);
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      color: var(--color-text-muted);
+    }
+
+    .case-study-title {
+      font-family: var(--font-display);
+      font-size: var(--text-2xl);
+      font-weight: 400;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      color: var(--color-text);
+    }
+
+    .case-study-desc {
+      font-size: var(--text-base);
+      font-weight: 300;
+      color: var(--color-text-muted);
+      line-height: 1.6;
+      max-width: 480px;
+    }
+
+    .case-study-action {
+      padding-top: 0;
+    }
+
+
+    .btn {
+      display: inline-block;
+      font-family: var(--font-body);
+      font-size: var(--text-sm);
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      color: var(--color-accent);
+      border: 1px solid var(--color-accent);
+      border-radius: var(--radius-sm);
+      padding: 10px var(--space-5);
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background-color var(--transition),
+                  color var(--transition),
+                  border-color var(--transition);
+      /* Ensure touch-friendly min target */
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .btn:hover,
+    .btn:focus-visible {
+      background-color: var(--color-accent);
+      color: #fff;
+      outline: none;
+    }
+
+    .btn:focus-visible {
+      outline: 2px solid var(--color-accent);
+      outline-offset: 3px;
+    }
+
+    /* =============================================
+       CONTACT SECTION
+       ============================================= */
+    .contact-section {
+      padding-top: var(--space-7);
+      padding-bottom: var(--space-7);
+    }
+
+    .contact-intro {
+      font-family: var(--font-display);
+      font-size: var(--text-2xl);
+      font-weight: 400;
+      line-height: 1.3;
+      color: var(--color-text);
+      margin-bottom: var(--space-4);
+      max-width: 420px;
+    }
+
+    .contact-intro em {
+      font-style: italic;
+      color: var(--color-text-muted);
+    }
+
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+
+    .contact-link {
+      font-size: var(--text-base);
+      font-weight: 400;
+      color: var(--color-accent);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      width: fit-content;
+      border-bottom: 1px solid transparent;
+      transition: border-color var(--transition), color var(--transition);
+    }
+
+    .contact-link:hover,
+    .contact-link:focus-visible {
+      border-bottom-color: var(--color-accent);
+      color: var(--color-accent-hover);
+      outline: none;
+    }
+
+    .contact-link:focus-visible {
+      outline: 2px solid var(--color-accent);
+      outline-offset: 3px;
+      border-radius: 2px;
+    }
+
+    .contact-link-label {
+      font-size: var(--text-xs);
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      min-width: 64px;
+    }
+
+    /* =============================================
+       FOOTER
+       ============================================= */
+    footer {
+      margin-top: auto;
+      padding: var(--space-6) 0;
+      border-top: 1px solid var(--color-border);
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: var(--space-3);
+    }
+
+    .footer-copy {
+      font-size: var(--text-xs);
+      color: var(--color-text-muted);
+    }
+
+    /* =============================================
+       RESPONSIVE — MOBILE
+       ============================================= */
+    @media (max-width: 640px) {
+      :root {
+        --text-3xl: 2rem;
+        --text-2xl: 1.5rem;
+        --space-9: 64px;
+      }
+
+      .container {
+        padding: 0 var(--space-5);
+      }
+
+      /* Stack the case study row on mobile */
+      .case-study {
+        grid-template-columns: 1fr;
+      }
+
+      .case-study-action {
+        padding-top: 0;
+      }
+
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+
+<body>
+<div class="page-wrapper">
+
+  <!-- =============================================
+       HERO SECTION
+       ============================================= -->
+  <header>
+    <div class="container">
+      <h1 class="hero-name">Vanolieska Mijares</h1>
+      <p class="hero-title">UX Designer</p>
+      <p class="hero-intro">
+        I am a UX Designer rooted in research and strategy.
+        I don't start with screens. I start with understanding. What problem are we solving. Who is it for.
+        Where does it break down. Then I shape that into digital experiences that feel clear and intentional.
+      </p>
+    </div>
+  </header>
+
+  <hr class="section-divider" />
+
+  <!-- =============================================
+       CASE STUDIES SECTION
+       ============================================= -->
+  <section aria-label="Case Studies">
+    <div class="container">
+
+      <!-- Case Study 1: BanooHealth -->
+      <article class="case-study" aria-label="BanooHealth UX Research case study">
+        <div class="case-study-meta">
+          <span class="case-study-number">01</span>
+          <h2 class="case-study-title">BanooHealth Case Study</h2>
+          <p class="case-study-desc">
+            UX research for a women's health platform serving immigrant and refugee communities.
+          </p>
+        </div>
+        <div class="case-study-action">
+          <a
+            href="https://mvanolieska-byte.github.io/ux-case-studies/banoohealth-detailed.html"
+            class="btn"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="View BanooHealth case study (opens in new tab)"
+          >
+            View Case Study
+          </a>
+        </div>
+      </article>
+
+      <!-- Case Study 2: TinyCycle -->
+      <article class="case-study" aria-label="TinyCycle Marketplace App case study">
+        <div class="case-study-meta">
+          <span class="case-study-number">02</span>
+          <h2 class="case-study-title">TinyCycle Marketplace App</h2>
+          <p class="case-study-desc">
+            End-to-end UX design project exploring a circular marketplace for children's clothing.
+          </p>
+        </div>
+        <div class="case-study-action">
+          <!--
+            REPLACE the href below with your PDF link.
+            Options:
+              1. Upload to Google Drive → right-click → "Get link" → paste here
+              2. Upload to Dropbox → share → "Copy link" → paste here
+              3. Drag the PDF into GitHub and use the raw URL
+          -->
+          <a
+            href="#"
+            class="btn"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="View TinyCycle Marketplace App case study PDF (opens in new tab)"
+          >
+            View Case Study
+          </a>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- =============================================
+       CONTACT SECTION
+       ============================================= -->
+  <section class="contact-section" aria-label="Contact">
+    <div class="container">
+      <p class="contact-intro">
+        If my work resonates, let's talk.
+      </p>
+      <div class="contact-links" role="list">
+
+        <div role="listitem">
+          <!--
+            REPLACE the href with your actual LinkedIn URL, e.g.:
+            href="https://www.linkedin.com/in/vanolieska"
+          -->
+          <a
+            href="https://www.linkedin.com"
+            class="contact-link"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Visit Vanolieska's LinkedIn profile (opens in new tab)"
+          >
+            linkedin.com/in/vanolieska
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================
+       FOOTER
+       ============================================= -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <span class="footer-copy">© 2026 Vanolieska Mijares</span>
+      </div>
+    </div>
+  </footer>
+
+</div><!-- end .page-wrapper -->
+</body>
+</html>
